@@ -22,26 +22,26 @@ Projeto completo de uma API RESTful para gerenciamento de um restaurante. Desenv
 ## 📁 Estrutura do Projeto
 
 restaurant-api/
-├── src/
-│ ├── main/java/com/example/restaurant/
-│ │ ├── config/ # Configurações (segurança, CORS, JWT, Swagger)
-│ │ ├── controller/ # REST Controllers (entrada HTTP)
-│ │ ├── dto/ # DTOs de entrada/saída
-│ │ ├── entity/ # Entidades JPA (map. banco)
-│ │ ├── repository/ # Repositórios Spring Data JPA
-│ │ ├── service/ # Lógica de negócios
-│ │ ├── mapper/ # MapStruct DTO <-> Entity
-│ │ ├── exception/ # Tratamento global de exceções
-│ │ └── RestaurantApiApplication.java
-│ ├── resources/
-│ │ ├── application.yml # Configurações do projeto
-│ │ └── db/migration/ # Scripts do Flyway
-│ └── test/ # Testes
-│ ├── java/ # Testes de unidade e integração
-│ └── resources/application-test.yml
-├── Dockerfile # Imagem Docker da aplicação
-├── docker-compose.yml # Subida do app + banco de dados
-├── README.md # Este arquivo
+src/
+main/java/com/example/restaurant/
+config/ # Configurações (segurança, CORS, JWT, Swagger)
+controller/ # REST Controllers (entrada HTTP)
+dto/ # DTOs de entrada/saída
+entity/ # Entidades JPA (map. banco)
+repository/ # Repositórios Spring Data JPA
+service/ # Lógica de negócios
+mapper/ # MapStruct DTO <-> Entity
+exception/ # Tratamento global de exceções
+RestaurantApiApplication.java
+resources/
+application.yml # Configurações do projeto
+db/migration/ # Scripts do Flyway
+test/ # Testes
+java/ # Testes de unidade e integração
+resources/application-test.yml
+Dockerfile # Imagem Docker da aplicação
+docker-compose.yml # Subida do app + banco de dados
+README.md # Este arquivo
 
 
 yaml
