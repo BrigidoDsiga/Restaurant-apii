@@ -61,52 +61,52 @@ docker-compose up --build
 
 O serviço estará disponível em: http://localhost:8080
 
-🔑 Autenticação
+Autenticação
 A API utiliza autenticação JWT. Após realizar login, será gerado um token que deve ser enviado no header Authorization em todas as requisições protegidas:
 
 Authorization: Bearer SEU_TOKEN
 
-🛠️ Endpoints Principais
+Endpoints Principais
 Autenticação:
 
-POST /api/auth/login
+- POST /api/auth/login
 
-POST /api/auth/register
+- POST /api/auth/register
 
 Clientes:
 
-GET /api/clients
+- GET /api/clients
 
-POST /api/clients
+- POST /api/clients
 
-PUT /api/clients/{id}
+- PUT /api/clients/{id}
 
-DELETE /api/clients/{id}
+- DELETE /api/clients/{id}
 
 Pratos:
 
-GET /api/dishes
+- GET /api/dishes
 
-POST /api/dishes
+- POST /api/dishes
 
-PUT /api/dishes/{id}
+- PUT /api/dishes/{id}
 
-DELETE /api/dishes/{id}
+- DELETE /api/dishes/{id}
 
 Pedidos:
 
-GET /api/orders
+- GET /api/orders
 
-POST /api/orders
+- POST /api/orders
 
-GET /api/orders/{id}
+- GET /api/orders/{id}
 
-🧪 Testes
+Testes
 Execute os testes com:
 
 ./mvnw test
 
-📄 Scripts Flyway
+Scripts Flyway
 Scripts de migração do banco estão em src/main/resources/db/migration. Exemplo:
 
 V1__init.sql: Criação inicial das tabelas
@@ -114,7 +114,7 @@ V1__init.sql: Criação inicial das tabelas
 V2__add_roles.sql: Adição da tabela de roles e permissões
 
 
-📚 Swagger (Documentação da API)
+Swagger (Documentação da API)
 Acesse a documentação interativa da API via Swagger em:
 
 http://localhost:8080/swagger-ui.html
