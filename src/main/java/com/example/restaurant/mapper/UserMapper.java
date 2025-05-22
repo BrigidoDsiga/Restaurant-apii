@@ -4,11 +4,13 @@ import com.example.restaurant.dto.UserDTO;
 import com.example.restaurant.model.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class UserMapper {
 
     public UserDTO toDTO(User user) {
-        if (user == null) {
+        if (Objects.isNull(user)) {
             return null;
         }
         return new UserDTO(
@@ -19,15 +21,17 @@ public class UserMapper {
         );
     }
 
-    public User toEntity(UserDTO userDTO) {
-        if (userDTO == null) {
+    public User toEntity(UserDTO dto) {
+        if (Objects.isNull(dto)) {
             return null;
         }
+
         User user = new User();
-        user.setId(userDTO.getId());
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
+        user.setId(dto.getId());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+        user.setRole(dto.getRole());
+
         return user;
     }
 }
