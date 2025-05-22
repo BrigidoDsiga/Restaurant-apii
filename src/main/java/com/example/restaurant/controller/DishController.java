@@ -16,7 +16,11 @@ public class DishController {
     private final DishService dishService;
 
     public DishController(DishService dishService) {
+<<<<<<< HEAD
         this.dishService = dishService;
+=======
+        this.dishService = dishService; 
+>>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c
     }
 
     @GetMapping

@@ -22,7 +22,11 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<OrderDTO>> getAllOrders() {
         List<OrderDTO> orders = orderService.getAllOrders();
+<<<<<<< HEAD
         return ResponseEntity.ok(orders);
+=======
+        return ResponseEntity.ok(orders); 
+>>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c
     }
 
     @GetMapping("/{id}")
@@ -56,4 +60,7 @@ public class OrderController {
                 : ResponseEntity.notFound().build();
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c

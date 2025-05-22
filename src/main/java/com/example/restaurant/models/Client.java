@@ -1,4 +1,3 @@
-// Entidade Cliente
 package com.example.restaurant.model;
 
 import jakarta.persistence.*;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Builder;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor 
 @AllArgsConstructor
 @Builder
 @Entity

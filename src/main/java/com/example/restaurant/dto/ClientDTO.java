@@ -28,7 +28,10 @@ public class ClientDTO {
     @Size(min = 8, max = 20, message = "Telefone deve ter entre 8 e 20 caracteres")
     private String phone;
 }
+<<<<<<< HEAD
 // A classe ClientDTO é um Objeto de Transferência de Dados (DTO) que representa a estrutura de dados de um cliente.
 // Ela contém campos para o ID, nome, e-mail e número de telefone do cliente.
 // As anotações de validação são usadas para garantir que os dados atendam a certos critérios antes de serem processados.
 // A anotação @Data do Lombok gera automaticamente os métodos getters, setters, equals, hashCode e toString para a classe.
+=======
+>>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c

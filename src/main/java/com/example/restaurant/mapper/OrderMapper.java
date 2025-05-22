@@ -27,11 +27,14 @@ public class OrderMapper {
                 order.getStatus()
         );
     }
+<<<<<<< HEAD
 
     /**
      * Esse método cria uma entidade Order apenas com dados simples.
      * A associação com Client e Dishes deve ser feita no Service, via repositórios.
      */
+=======
+>>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c
     public Order toEntity(OrderDTO dto) {
         if (Objects.isNull(dto)) {
             return null;
@@ -41,8 +44,11 @@ public class OrderMapper {
         order.setId(dto.getId());
         order.setTotal(dto.getTotal());
         order.setStatus(dto.getStatus());
+<<<<<<< HEAD
 
         // A associação com client e dishes deve ser feita no serviço.
+=======
+>>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c
         return order;
     }
 }
