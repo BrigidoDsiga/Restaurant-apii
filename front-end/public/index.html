@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Restaurante Online - Sistema de Pedidos</title>
   <style>
-    /* Seu CSS permanece igual */
     @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Pacifico&display=swap');
 
     body {
       background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
       font-family: 'Baloo 2', cursive;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
@@ -18,6 +21,11 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       padding: 1rem;
       color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     header h1 {
@@ -25,6 +33,7 @@
       font-size: 2rem;
       letter-spacing: 1px;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+      margin: 0;
     }
 
     nav button {
@@ -33,50 +42,80 @@
       border: 2px solid white;
       color: white;
       padding: 0.5rem 1rem;
-      margin-right: 1rem;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    nav button:hover,
+    nav button:focus {
+      background: rgba(255, 255, 255, 0.4);
+      outline: none;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    h2 {
+      color: #004a99;
+      font-family: 'Baloo 2', cursive;
+      text-align: center;
+      margin-bottom: 1rem;
+      border-bottom: none;
     }
 
     .dishes-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
-      padding: 1rem;
     }
 
     .dish-card {
-      border: 2px solid transparent;
       background: linear-gradient(145deg, #ffffff, #e6e6e6);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       padding: 1rem;
       border-radius: 16px;
-      transition: border-color 0.3s;
+      border: 2px solid transparent;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.3s ease;
     }
 
-    .dish-card:hover {
+    .dish-card:hover,
+    .dish-card:focus-within {
       border-color: #007bff;
+      outline: none;
     }
 
     .dish-name {
       font-family: 'Baloo 2', cursive;
       font-size: 1.4rem;
       font-weight: bold;
+      margin: 0 0 0.5rem 0;
     }
 
     .dish-desc {
       font-size: 1rem;
       color: #555;
-      margin: 0.5rem 0;
+      flex-grow: 1;
+      margin: 0 0 0.5rem 0;
     }
 
     .dish-price {
       font-size: 1.3rem;
       color: #28a745;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
 
     .add-to-cart-btn {
-      margin-top: 0.5rem;
       padding: 0.5rem 1rem;
       border: none;
       border-radius: 8px;
@@ -85,25 +124,49 @@
       font-weight: bold;
       background-image: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
       box-shadow: 0 3px 8px rgba(0, 123, 255, 0.4);
+      transition: background-image 0.3s ease;
     }
 
-    .modal-content {
-      background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    .add-to-cart-btn:hover,
+    .add-to-cart-btn:focus {
+      background-image: linear-gradient(135deg, #0072ff 0%, #00c6ff 100%);
+      outline: none;
+    }
+
+    .contact-section {
+      background: linear-gradient(to bottom right, #fff, #e0f7fa);
+      border: 2px solid #b2ebf2;
       padding: 1rem;
+      margin: 2rem auto;
       border-radius: 12px;
-      width: 90%;
       max-width: 600px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.05);
     }
 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+      color: #004a99;
+    }
+
+    input, textarea {
       width: 100%;
-      height: 100%;
-      justify-content: center;
-      align-items: center;
-      background-color: rgba(0,0,0,0.5);
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #007bff;
+      outline: none;
     }
 
     .btn-primary {
@@ -114,12 +177,136 @@
       padding: 0.5rem 1rem;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
     }
 
-    .btn-primary:hover {
+    .btn-primary:hover,
+    .btn-primary:focus {
       background: linear-gradient(120deg, #8fd3f4 0%, #84fab0 100%);
+      outline: none;
     }
 
+    #contact-feedback {
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 9999;
+    }
+
+    .modal[aria-hidden="false"] {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+      padding: 1rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-family: 'Baloo 2', cursive;
+      color: #004a99;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+      color: #555;
+      transition: color 0.3s ease;
+    }
+
+    .modal-close:hover,
+    .modal-close:focus {
+      color: #007bff;
+      outline: none;
+    }
+
+    .modal-body {
+      flex-grow: 1;
+      overflow-y: auto;
+      outline: none;
+    }
+
+    .cart-items {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+    }
+
+    .cart-items li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: #ff4444;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 0;
+      margin-left: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    .remove-btn:hover,
+    .remove-btn:focus {
+      color: #cc0000;
+      outline: none;
+    }
+
+    .cart-total {
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: right;
+      margin-bottom: 1rem;
+      color: #004a99;
+    }
+
+    .modal-footer {
+      text-align: right;
+    }
+
+    .modal-footer button {
+      min-width: 150px;
+    }
+
+    /* Back to top button */
     #back-to-top {
       background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
       box-shadow: 0 4px 14px rgba(255, 210, 0, 0.6);
@@ -127,11 +314,21 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      padding: 0.5rem;
+      padding: 0.5rem 0.6rem;
       border-radius: 50%;
       border: none;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       cursor: pointer;
+      color: #fff;
+      z-index: 10000;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     @keyframes pulse {
@@ -140,50 +337,18 @@
       100% { transform: scale(1); }
     }
 
-    h2 {
-      color: #004a99;
-      font-family: 'Baloo 2', cursive;
-      text-align: center;
-      border-bottom: none;
-    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-    .contact-section {
-      background: linear-gradient(to bottom right, #fff, #e0f7fa);
-      border: 2px solid #b2ebf2;
-      padding: 1rem;
-      margin: 2rem;
-      border-radius: 12px;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.3rem;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    .cart-items {
-      list-style: none;
-      padding: 0;
-    }
-
-    .remove-btn {
-      margin-left: 1rem;
-      background: transparent;
-      border: none;
-      color: #ff4444;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1rem;
+      nav button {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -199,7 +364,7 @@
   <main>
     <section aria-labelledby="menu-title">
       <h2 id="menu-title">Nosso Cardápio</h2>
-      <ul class="dishes-grid" role="list" id="dishes-list"></ul>
+      <ul class="dishes-grid" role="list" id="dishes-list" tabindex="0"></ul>
     </section>
 
     <section id="contact-section" class="contact-section" aria-labelledby="contact-title">
@@ -244,198 +409,202 @@
   <script>
     // Dados dos pratos (cardápio)
     const dishes = [
-      {
-        id: 1,
-        name: 'Prato 1',
-        description: 'Delicioso prato 1 com ingredientes frescos',
-        price: 10.99
-      },
-      {
-        id: 2,
-        name: 'Prato 2',
-        description: 'Saboroso prato 2 com temperos especiais',
-        price: 12.99
-      },
-      {
-        id: 3,
-        name: 'Prato 3',
-        description: 'Exótico prato 3 com toque oriental',
-        price: 15.99
-      },
-      {
-        id: 4,
-        name: 'Prato 4',
-        description: 'Clássico prato 4 da culinária local',
-        price: 8.99
-      }
+      { id: 1, name: 'Prato 1', description: 'Delicioso prato 1 com ingredientes frescos', price: 10.99 },
+      { id: 2, name: 'Prato 2', description: 'Saboroso prato 2 com temperos especiais', price: 12.99 },
+      { id: 3, name: 'Prato 3', description: 'Exótico prato 3 com toque oriental', price: 15.99 },
+      { id: 4, name: 'Prato 4', description: 'Clássico prato 4 da casa', price: 9.99 },
+      { id: 5, name: 'Prato 5', description: 'Prato 5 vegetariano e nutritivo', price: 11.49 },
+      { id: 6, name: 'Prato 6', description: 'Especial do chef, prato 6', price: 18.50 }
     ];
 
-    // Referências para elementos DOM
+    // Referências DOM
     const dishesList = document.getElementById('dishes-list');
     const cartModal = document.getElementById('cart-modal');
     const openCartBtn = document.getElementById('open-cart-btn');
-    const closeCartBtn = cartModal.querySelector('.modal-close');
-    const cartItemsList = document.getElementById('cart-items');
-    const cartTotalElem = document.getElementById('cart-total');
+    const modalCloseBtn = cartModal.querySelector('.modal-close');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalDisplay = document.getElementById('cart-total');
     const checkoutBtn = document.getElementById('checkout-btn');
-    const scrollContactBtn = document.getElementById('scroll-contact-btn');
-    const backToTopBtn = document.getElementById('back-to-top');
     const contactForm = document.getElementById('contact-form');
     const contactFeedback = document.getElementById('contact-feedback');
+    const scrollContactBtn = document.getElementById('scroll-contact-btn');
+    const backToTopBtn = document.getElementById('back-to-top');
 
-    // Carrinho de compras
     let cart = [];
 
-    // Função para formatar preço em BRL
-    function formatPrice(price) {
-      return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    // Função para formatar preço para BRL
+    function formatPrice(value) {
+      return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    // Renderizar cardápio
-    function renderMenu() {
+    // Renderiza os pratos no cardápio
+    function renderDishes() {
       dishesList.innerHTML = '';
       dishes.forEach(dish => {
         const li = document.createElement('li');
-        li.classList.add('dish-card');
+        li.className = 'dish-card';
         li.setAttribute('tabindex', '0');
         li.innerHTML = `
           <h3 class="dish-name">${dish.name}</h3>
           <p class="dish-desc">${dish.description}</p>
           <div class="dish-price">${formatPrice(dish.price)}</div>
-          <button class="add-to-cart-btn" aria-label="Adicionar ${dish.name} ao carrinho">Adicionar</button>
+          <button class="add-to-cart-btn" aria-label="Adicionar ${dish.name} ao carrinho" data-id="${dish.id}">Adicionar</button>
         `;
-        const btn = li.querySelector('.add-to-cart-btn');
-        btn.addEventListener('click', () => addToCart(dish));
         dishesList.appendChild(li);
       });
     }
 
-    // Adicionar prato ao carrinho
-    function addToCart(dish) {
-      const foundItem = cart.find(item => item.id === dish.id);
-      if (foundItem) {
-        foundItem.quantity++;
-      } else {
-        cart.push({...dish, quantity: 1});
-      }
-      updateCartUI();
-      openCart(); // abre o modal para feedback visual imediato
-    }
-
-    // Atualizar interface do carrinho
-    function updateCartUI() {
-      cartItemsList.innerHTML = '';
+    // Atualiza a exibição do carrinho
+    function renderCart() {
+      cartItemsContainer.innerHTML = '';
       if (cart.length === 0) {
-        cartItemsList.innerHTML = '<li>Seu carrinho está vazio.</li>';
-        cartTotalElem.textContent = 'Total: R$ 0,00';
+        cartItemsContainer.innerHTML = '<li>Seu carrinho está vazio.</li>';
+        cartTotalDisplay.textContent = 'Total: R$ 0,00';
         checkoutBtn.disabled = true;
         return;
       }
 
       checkoutBtn.disabled = false;
-      let total = 0;
+
       cart.forEach(item => {
-        total += item.price * item.quantity;
         const li = document.createElement('li');
-        li.textContent = `${item.name} - ${formatPrice(item.price)} x ${item.quantity} = ${formatPrice(item.price * item.quantity)}`;
-        // Botão para remover item do carrinho
+        li.textContent = `${item.name} x${item.quantity} - ${formatPrice(item.price * item.quantity)}`;
         const removeBtn = document.createElement('button');
-        removeBtn.textContent = '❌';
-        removeBtn.classList.add('remove-btn');
+        removeBtn.className = 'remove-btn';
         removeBtn.setAttribute('aria-label', `Remover ${item.name} do carrinho`);
+        removeBtn.textContent = '✕';
         removeBtn.addEventListener('click', () => removeFromCart(item.id));
         li.appendChild(removeBtn);
-        cartItemsList.appendChild(li);
+        cartItemsContainer.appendChild(li);
       });
-      cartTotalElem.textContent = `Total: ${formatPrice(total)}`;
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      cartTotalDisplay.textContent = `Total: ${formatPrice(total)}`;
     }
 
-    // Remover item do carrinho
-    function removeFromCart(id) {
-      const itemIndex = cart.findIndex(item => item.id === id);
-      if (itemIndex !== -1) {
-        if (cart[itemIndex].quantity > 1) {
-          cart[itemIndex].quantity--;
-        } else {
-          cart.splice(itemIndex, 1);
-        }
-        updateCartUI();
+    // Adiciona um prato ao carrinho
+    function addToCart(id) {
+      const dish = dishes.find(d => d.id === id);
+      if (!dish) return;
+
+      const cartItem = cart.find(item => item.id === id);
+      if (cartItem) {
+        cartItem.quantity++;
+      } else {
+        cart.push({ ...dish, quantity: 1 });
       }
+      renderCart();
     }
 
-    // Abrir modal do carrinho
+    // Remove um prato do carrinho
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      renderCart();
+    }
+
+    // Abre o modal do carrinho
     function openCart() {
-      cartModal.style.display = 'flex';
       cartModal.setAttribute('aria-hidden', 'false');
       openCartBtn.setAttribute('aria-expanded', 'true');
-      cartModal.focus();
+      cartModal.style.display = 'flex';
+      renderCart();
+      // foco no modal para acessibilidade
+      cartModal.querySelector('.modal-body').focus();
     }
 
-    // Fechar modal do carrinho
+    // Fecha o modal do carrinho
     function closeCart() {
-      cartModal.style.display = 'none';
       cartModal.setAttribute('aria-hidden', 'true');
       openCartBtn.setAttribute('aria-expanded', 'false');
+      cartModal.style.display = 'none';
       openCartBtn.focus();
     }
 
-    // Finalizar pedido
+    // Handle checkout (finalizar pedido)
     function checkout() {
-      if (cart.length === 0) {
-        alert('Seu carrinho está vazio.');
-        return;
-      }
-      let summary = 'Resumo do pedido:\n';
-      let total = 0;
-      cart.forEach(item => {
-        summary += `${item.name} x${item.quantity} - ${formatPrice(item.price * item.quantity)}\n`;
-        total += item.price * item.quantity;
-      });
-      summary += `Total: ${formatPrice(total)}\n\nObrigado pela sua compra!`;
-      alert(summary);
+      if (cart.length === 0) return;
+      alert('Pedido finalizado com sucesso! Obrigado por comprar conosco.');
       cart = [];
-      updateCartUI();
+      renderCart();
       closeCart();
     }
 
-    // Eventos
-    openCartBtn.addEventListener('click', openCart);
-    closeCartBtn.addEventListener('click', closeCart);
-    checkoutBtn.addEventListener('click', checkout);
+    // Validação e envio do formulário de contato
+    function handleContactSubmit(event) {
+      event.preventDefault();
+      contactFeedback.textContent = '';
+      const name = contactForm.name.value.trim();
+      const email = contactForm.email.value.trim();
+      const message = contactForm.message.value.trim();
 
-    // Fechar modal com ESC
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && cartModal.style.display === 'flex') {
+      if (!name || !email || !message) {
+        contactFeedback.textContent = 'Por favor, preencha todos os campos.';
+        contactFeedback.style.color = '#cc0000';
+        return;
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        contactFeedback.textContent = 'E-mail inválido.';
+        contactFeedback.style.color = '#cc0000';
+        return;
+      }
+
+      // Aqui você pode integrar com backend ou API para envio
+      contactFeedback.textContent = 'Mensagem enviada com sucesso!';
+      contactFeedback.style.color = '#28a745';
+
+      contactForm.reset();
+    }
+
+    // Scroll suave para contato
+    function scrollToContact() {
+      document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Back to top button visibility
+    function handleScroll() {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    }
+
+    // Scroll to top function
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Eventos
+    dishesList.addEventListener('click', (e) => {
+      if (e.target.classList.contains('add-to-cart-btn')) {
+        const id = parseInt(e.target.getAttribute('data-id'));
+        addToCart(id);
+      }
+    });
+
+    openCartBtn.addEventListener('click', openCart);
+    modalCloseBtn.addEventListener('click', closeCart);
+    checkoutBtn.addEventListener('click', checkout);
+    contactForm.addEventListener('submit', handleContactSubmit);
+    scrollContactBtn.addEventListener('click', scrollToContact);
+    backToTopBtn.addEventListener('click', scrollToTop);
+    window.addEventListener('scroll', handleScroll);
+
+    // Fechar modal com ESC e clique fora
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && cartModal.getAttribute('aria-hidden') === 'false') {
         closeCart();
       }
     });
 
-    // Botão voltar ao topo
-    backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({top: 0, behavior: 'smooth'});
+    cartModal.addEventListener('click', (e) => {
+      if (e.target === cartModal) closeCart();
     });
 
-    // Scroll para contato
-    scrollContactBtn.addEventListener('click', () => {
-      document.getElementById('contact-section').scrollIntoView({behavior: 'smooth'});
-    });
-
-    // Envio do formulário de contato (simulado)
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!contactForm.checkValidity()) {
-        contactFeedback.textContent = 'Por favor, preencha todos os campos corretamente.';
-        contactFeedback.style.color = 'red';
-        return;
-      }
-      contactFeedback.textContent = 'Mensagem enviada com sucesso. Obrigado!';
-      contactFeedback.style.color = 'green';
-      contactForm.reset();
-    });
-
-    // Inicialização
-    renderMenu();
-    updateCartUI();
+    // Inicializa
+    renderDishes();
   </script>
 </body>
 </html>
