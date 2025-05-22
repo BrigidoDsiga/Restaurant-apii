@@ -1,12 +1,10 @@
--- Script de inicialização do banco de dados para o sistema de pedidos
-
 -- Criação da tabela de roles/perfis
 CREATE TABLE IF NOT EXISTS roles (
-    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    id BIGSERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
 );
 
--- Tabela de associação entre usuários e roles (muitos para muitos)
+-- Tabela associativa entre usuários e roles (many-to-many)
 CREATE TABLE IF NOT EXISTS user_roles (
     user_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL,
@@ -15,8 +13,9 @@ CREATE TABLE IF NOT EXISTS user_roles (
     CONSTRAINT fk_user_roles_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
--- Inserção de roles padrão, se não existirem
-INSERT INTO roles (name) 
-SELECT 'ADMIN' WHERE NOT EXISTS (SELECT 1 FROM roles WHERE name = 'ADMIN');
-INSERT INTO roles (name) 
-SELECT 'USER' WHERE NOT EXISTS (SELECT 1 FROM roles WHERE name = 'USER');
+-- Inserção das roles padrão (ADMIN e USER), ignorando se já existirem
+INSERT INTO roles (name) VALUES ('ADMIN')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO roles (name) VALUES ('USER')
+ON CONFLICT (name) DO NOTHING;
