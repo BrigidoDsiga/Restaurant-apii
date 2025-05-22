@@ -4,11 +4,13 @@ import com.example.restaurant.dto.ClientDTO;
 import com.example.restaurant.model.Client;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class ClientMapper {
 
     public ClientDTO toDTO(Client client) {
-        if (client == null) {
+        if (Objects.isNull(client)) {
             return null;
         }
         return new ClientDTO(
@@ -19,15 +21,15 @@ public class ClientMapper {
         );
     }
 
-    public Client toEntity(ClientDTO clientDTO) {
-        if (clientDTO == null) {
+    public Client toEntity(ClientDTO dto) {
+        if (Objects.isNull(dto)) {
             return null;
         }
         Client client = new Client();
-        client.setId(clientDTO.getId());
-        client.setName(clientDTO.getName());
-        client.setEmail(clientDTO.getEmail());
-        client.setPhone(clientDTO.getPhone());
+        client.setId(dto.getId());
+        client.setName(dto.getName());
+        client.setEmail(dto.getEmail());
+        client.setPhone(dto.getPhone());
         return client;
     }
 }
