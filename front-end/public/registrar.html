@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrar - Restaurante Premium</title>
+  <style>
+    /* Reset simples */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+    body {
+      background: #1a1a1a;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .form-container {
+      background: #2c2c2c;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      margin-bottom: 25px;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #ffd700;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input {
+      background: #444;
+      border: 2px solid #444;
+      border-radius: 6px;
+      padding: 12px 15px;
+      margin-bottom: 18px;
+      font-size: 1rem;
+      color: #eee;
+      transition: border-color 0.3s ease;
+    }
+    input:focus {
+      border-color: #ffd700;
+      outline: none;
+      background: #3a3a3a;
+    }
+    input.invalid {
+      border-color: #e74c3c;
+      background: #5a2a2a;
+    }
+    button {
+      background: #ffd700;
+      border: none;
+      color: #222;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 4px 10px rgba(255,215,0,0.6);
+    }
+    button:hover {
+      background: #e6c200;
+    }
+    .error {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      min-height: 20px;
+      margin-top: -10px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .success {
+      color: #2ecc71;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    @media (max-width: 420px) {
+      .form-container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container" role="main" aria-label="Formulário de cadastro">
+    <h2>Registrar</h2>
+    <form id="registerForm" novalidate>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Usuário"
+        autocomplete="username"
+        required
+        aria-describedby="usernameError"
+        aria-invalid="false"
+      />
+      <p id="usernameError" class="error" aria-live="polite"></p>
+
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Email"
+        autocomplete="email"
+        required
+        aria-describedby="emailError"
+        aria-invalid="false"
+      />
+      <p id="emailError" class="error" aria-live="polite"></p>
+
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Senha"
+        autocomplete="new-password"
+        required
+        minlength="6"
+        aria-describedby="passwordError"
+        aria-invalid="false"
+      />
+      <p id="passwordError" class="error" aria-live="polite"></p>
+
+      <button type="submit" aria-label="Registrar usuário">Registrar</button>
+    </form>
+    <p id="registerMessage" class="success" aria-live="polite"></p>
+  </div>
+
+  <script>
+    (() => {
+      const form = document.getElementById('registerForm');
+      const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+
+      const usernameError = document.getElementById('usernameError');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+      const registerMessage = document.getElementById('registerMessage');
+
+      // Funções de validação
+      function validateUsername() {
+        const val = usernameInput.value.trim();
+        if (val.length < 3) {
+          usernameError.textContent = 'O usuário deve ter ao menos 3 caracteres.';
+          usernameInput.classList.add('invalid');
+          usernameInput.setAttribute('aria-invalid', 'true');
+          return false;
+        }
+        usernameError.textContent = '';
+        usernameInput.classList.remove('invalid');
+        usernameInput.setAttribute('aria-invalid', 'false');
+        return true;
+      }
+
+      function validateEmail() {
+        const val = emailInput.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(val)) {
+          emailError.textContent = 'Por favor, insira um e-mail válido.';
+          emailInput.classList.add('invalid');
+          emailInput.setAttribute('aria-invalid', 'true');
+          return false;
+        }
+        emailError.textContent = '';
+        emailInput.classList.remove('invalid');
+        emailInput.setAttribute('aria-invalid', 'false');
+        return true;
+      }
+
+      function validatePassword() {
+        const val = passwordInput.value;
+        if (val.length < 6) {
+          passwordError.textContent = 'A senha deve ter ao menos 6 caracteres.';
+          passwordInput.classList.add('invalid');
+          passwordInput.setAttribute('aria-invalid', 'true');
+          return false;
+        }
+        passwordError.textContent = '';
+        passwordInput.classList.remove('invalid');
+        passwordInput.setAttribute('aria-invalid', 'false');
+        return true;
+      }
+
+      // Validação ao digitar
+      usernameInput.addEventListener('input', validateUsername);
+      emailInput.addEventListener('input', validateEmail);
+      passwordInput.addEventListener('input', validatePassword);
+
+      // Simula cadastro no localStorage
+      function saveUser(user) {
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        // Verifica se email ou usuário já existe
+        const exists = users.some(
+          u => u.email.toLowerCase() === user.email.toLowerCase() || u.username.toLowerCase() === user.username.toLowerCase()
+        );
+        if (exists) return false;
+        users.push(user);
+        localStorage.setItem('users', JSON.stringify(users));
+        return true;
+      }
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        registerMessage.textContent = '';
+        if (validateUsername() && validateEmail() && validatePassword()) {
+          const user = {
+            username: usernameInput.value.trim(),
+            email: emailInput.value.trim(),
+            password: passwordInput.value // Atenção: não armazenar senha em texto puro em produção!
+          };
+          const success = saveUser(user);
+          if (!success) {
+            registerMessage.textContent = '';
+            emailError.textContent = 'Usuário ou email já cadastrado.';
+            emailInput.classList.add('invalid');
+            emailInput.setAttribute('aria-invalid', 'true');
+          } else {
+            registerMessage.textContent = 'Cadastro realizado com sucesso! Você já pode fazer login.';
+            form.reset();
+            usernameInput.setAttribute('aria-invalid', 'false');
+            emailInput.setAttribute('aria-invalid', 'false');
+            passwordInput.setAttribute('aria-invalid', 'false');
+            usernameError.textContent = '';
+            emailError.textContent = '';
+            passwordError.textContent = '';
+          }
+        } else {
+          registerMessage.textContent = '';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

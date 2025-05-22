@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Restaurante Online - Sistema de Pedidos</title>
+  <style>
+    /* Seu CSS permanece igual */
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Pacifico&display=swap');
+
+    body {
+      background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+      font-family: 'Baloo 2', cursive;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      padding: 1rem;
+      color: white;
+    }
+
+    header h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2rem;
+      letter-spacing: 1px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    }
+
+    nav button {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      border: 2px solid white;
+      color: white;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .dishes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+
+    .dish-card {
+      border: 2px solid transparent;
+      background: linear-gradient(145deg, #ffffff, #e6e6e6);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      border-radius: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .dish-card:hover {
+      border-color: #007bff;
+    }
+
+    .dish-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .dish-desc {
+      font-size: 1rem;
+      color: #555;
+      margin: 0.5rem 0;
+    }
+
+    .dish-price {
+      font-size: 1.3rem;
+      color: #28a745;
+    }
+
+    .add-to-cart-btn {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      background-image: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+      box-shadow: 0 3px 8px rgba(0, 123, 255, 0.4);
+    }
+
+    .modal-content {
+      background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+      padding: 1rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+      color: #222;
+      font-weight: bold;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(120deg, #8fd3f4 0%, #84fab0 100%);
+    }
+
+    #back-to-top {
+      background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+      box-shadow: 0 4px 14px rgba(255, 210, 0, 0.6);
+      animation: pulse 2s infinite;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 0.5rem;
+      border-radius: 50%;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    h2 {
+      color: #004a99;
+      font-family: 'Baloo 2', cursive;
+      text-align: center;
+      border-bottom: none;
+    }
+
+    .contact-section {
+      background: linear-gradient(to bottom right, #fff, #e0f7fa);
+      border: 2px solid #b2ebf2;
+      padding: 1rem;
+      margin: 2rem;
+      border-radius: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .cart-items {
+      list-style: none;
+      padding: 0;
+    }
+
+    .remove-btn {
+      margin-left: 1rem;
+      background: transparent;
+      border: none;
+      color: #ff4444;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header role="banner">
+    <h1>Restaurante Online</h1>
+    <nav role="navigation" aria-label="Menu principal">
+      <button type="button" id="open-cart-btn" aria-haspopup="dialog" aria-controls="cart-modal" aria-expanded="false">Carrinho 🛒</button>
+      <button type="button" id="scroll-contact-btn">Contato 📩</button>
+    </nav>
+  </header>
+
+  <main>
+    <section aria-labelledby="menu-title">
+      <h2 id="menu-title">Nosso Cardápio</h2>
+      <ul class="dishes-grid" role="list" id="dishes-list"></ul>
+    </section>
+
+    <section id="contact-section" class="contact-section" aria-labelledby="contact-title">
+      <h2 id="contact-title">Fale Conosco</h2>
+      <form id="contact-form" class="contact-form" novalidate>
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input id="name" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="message">Mensagem</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Enviar</button>
+        <p id="contact-feedback" role="alert" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <div id="cart-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true" tabindex="-1">
+    <div class="modal-content">
+      <header class="modal-header">
+        <h3 id="cart-title">Seu Carrinho</h3>
+        <button type="button" class="modal-close" aria-label="Fechar carrinho">&times;</button>
+      </header>
+      <section class="modal-body" tabindex="0">
+        <ul id="cart-items" class="cart-items" role="list"></ul>
+        <div class="cart-total" id="cart-total">Total: R$ 0,00</div>
+      </section>
+      <footer class="modal-footer">
+        <button id="checkout-btn" class="btn-primary">Finalizar Pedido</button>
+      </footer>
+    </div>
+  </div>
+
+  <button id="back-to-top" aria-label="Voltar ao topo">⬆</button>
+
+  <script>
+    // Dados dos pratos (cardápio)
+    const dishes = [
+      {
+        id: 1,
+        name: 'Prato 1',
+        description: 'Delicioso prato 1 com ingredientes frescos',
+        price: 10.99
+      },
+      {
+        id: 2,
+        name: 'Prato 2',
+        description: 'Saboroso prato 2 com temperos especiais',
+        price: 12.99
+      },
+      {
+        id: 3,
+        name: 'Prato 3',
+        description: 'Exótico prato 3 com toque oriental',
+        price: 15.99
+      },
+      {
+        id: 4,
+        name: 'Prato 4',
+        description: 'Clássico prato 4 da culinária local',
+        price: 8.99
+      }
+    ];
+
+    // Referências para elementos DOM
+    const dishesList = document.getElementById('dishes-list');
+    const cartModal = document.getElementById('cart-modal');
+    const openCartBtn = document.getElementById('open-cart-btn');
+    const closeCartBtn = cartModal.querySelector('.modal-close');
+    const cartItemsList = document.getElementById('cart-items');
+    const cartTotalElem = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const scrollContactBtn = document.getElementById('scroll-contact-btn');
+    const backToTopBtn = document.getElementById('back-to-top');
+    const contactForm = document.getElementById('contact-form');
+    const contactFeedback = document.getElementById('contact-feedback');
+
+    // Carrinho de compras
+    let cart = [];
+
+    // Função para formatar preço em BRL
+    function formatPrice(price) {
+      return price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    // Renderizar cardápio
+    function renderMenu() {
+      dishesList.innerHTML = '';
+      dishes.forEach(dish => {
+        const li = document.createElement('li');
+        li.classList.add('dish-card');
+        li.setAttribute('tabindex', '0');
+        li.innerHTML = `
+          <h3 class="dish-name">${dish.name}</h3>
+          <p class="dish-desc">${dish.description}</p>
+          <div class="dish-price">${formatPrice(dish.price)}</div>
+          <button class="add-to-cart-btn" aria-label="Adicionar ${dish.name} ao carrinho">Adicionar</button>
+        `;
+        const btn = li.querySelector('.add-to-cart-btn');
+        btn.addEventListener('click', () => addToCart(dish));
+        dishesList.appendChild(li);
+      });
+    }
+
+    // Adicionar prato ao carrinho
+    function addToCart(dish) {
+      const foundItem = cart.find(item => item.id === dish.id);
+      if (foundItem) {
+        foundItem.quantity++;
+      } else {
+        cart.push({...dish, quantity: 1});
+      }
+      updateCartUI();
+      openCart(); // abre o modal para feedback visual imediato
+    }
+
+    // Atualizar interface do carrinho
+    function updateCartUI() {
+      cartItemsList.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsList.innerHTML = '<li>Seu carrinho está vazio.</li>';
+        cartTotalElem.textContent = 'Total: R$ 0,00';
+        checkoutBtn.disabled = true;
+        return;
+      }
+
+      checkoutBtn.disabled = false;
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.quantity;
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ${formatPrice(item.price)} x ${item.quantity} = ${formatPrice(item.price * item.quantity)}`;
+        // Botão para remover item do carrinho
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '❌';
+        removeBtn.classList.add('remove-btn');
+        removeBtn.setAttribute('aria-label', `Remover ${item.name} do carrinho`);
+        removeBtn.addEventListener('click', () => removeFromCart(item.id));
+        li.appendChild(removeBtn);
+        cartItemsList.appendChild(li);
+      });
+      cartTotalElem.textContent = `Total: ${formatPrice(total)}`;
+    }
+
+    // Remover item do carrinho
+    function removeFromCart(id) {
+      const itemIndex = cart.findIndex(item => item.id === id);
+      if (itemIndex !== -1) {
+        if (cart[itemIndex].quantity > 1) {
+          cart[itemIndex].quantity--;
+        } else {
+          cart.splice(itemIndex, 1);
+        }
+        updateCartUI();
+      }
+    }
+
+    // Abrir modal do carrinho
+    function openCart() {
+      cartModal.style.display = 'flex';
+      cartModal.setAttribute('aria-hidden', 'false');
+      openCartBtn.setAttribute('aria-expanded', 'true');
+      cartModal.focus();
+    }
+
+    // Fechar modal do carrinho
+    function closeCart() {
+      cartModal.style.display = 'none';
+      cartModal.setAttribute('aria-hidden', 'true');
+      openCartBtn.setAttribute('aria-expanded', 'false');
+      openCartBtn.focus();
+    }
+
+    // Finalizar pedido
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Seu carrinho está vazio.');
+        return;
+      }
+      let summary = 'Resumo do pedido:\n';
+      let total = 0;
+      cart.forEach(item => {
+        summary += `${item.name} x${item.quantity} - ${formatPrice(item.price * item.quantity)}\n`;
+        total += item.price * item.quantity;
+      });
+      summary += `Total: ${formatPrice(total)}\n\nObrigado pela sua compra!`;
+      alert(summary);
+      cart = [];
+      updateCartUI();
+      closeCart();
+    }
+
+    // Eventos
+    openCartBtn.addEventListener('click', openCart);
+    closeCartBtn.addEventListener('click', closeCart);
+    checkoutBtn.addEventListener('click', checkout);
+
+    // Fechar modal com ESC
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && cartModal.style.display === 'flex') {
+        closeCart();
+      }
+    });
+
+    // Botão voltar ao topo
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+
+    // Scroll para contato
+    scrollContactBtn.addEventListener('click', () => {
+      document.getElementById('contact-section').scrollIntoView({behavior: 'smooth'});
+    });
+
+    // Envio do formulário de contato (simulado)
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!contactForm.checkValidity()) {
+        contactFeedback.textContent = 'Por favor, preencha todos os campos corretamente.';
+        contactFeedback.style.color = 'red';
+        return;
+      }
+      contactFeedback.textContent = 'Mensagem enviada com sucesso. Obrigado!';
+      contactFeedback.style.color = 'green';
+      contactForm.reset();
+    });
+
+    // Inicialização
+    renderMenu();
+    updateCartUI();
+  </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard do Usuário - Restaurante</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Bem-vindo</h1>
+    <button onclick="logout()">Sair</button>
+  </header>
+  <main>
+    <section>
+      <h2>Seus Pedidos</h2>
+      <ul id="userOrdersList"></ul>
+    </section>
+  </main>
+  <script>
+    const API_URL = 'http://localhost:8080/api';
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    async function fetchUserOrders() {
+      try {
+        const response = await fetch(`${API_URL}/orders`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Erro ao buscar pedidos.');
+
+        const orders = await response.json();
+        renderOrders(orders);
+      } catch (err) {
+        console.error(err.message);
+        document.getElementById('userOrdersList').innerHTML = '<li>Erro ao carregar pedidos.</li>';
+      }
+    }
+
+    function renderOrders(orders) {
+      const list = document.getElementById('userOrdersList');
+      list.innerHTML = '';
+
+      orders.forEach(order => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <strong>Pedido #${order.id}</strong><br>
+          Itens: ${order.items.map(i => i.name).join(', ')}<br>
+          Status: ${order.status}
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchUserOrders);
+  </script>
+</body>
+</html>
