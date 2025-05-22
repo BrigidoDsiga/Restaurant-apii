@@ -1,4 +1,3 @@
-// Entidade Cliente
 package com.example.restaurant.model;
 
 import jakarta.persistence.*;
