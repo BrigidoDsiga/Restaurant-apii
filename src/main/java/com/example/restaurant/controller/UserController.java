@@ -1,59 +1,59 @@
 package com.example.restaurant.controller;
 
-import com.example.restaurant.model.User;
+import com.example.restaurant.dto.UserDTO;
 import com.example.restaurant.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        if (user != null) {
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO user = userService.getUserById(id);
+        return user != null
+                ? ResponseEntity.ok(user)
+                : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user);
-        return ResponseEntity.ok(createdUser);
+    public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
+        UserDTO createdUser = userService.createUser(userDTO);
+        return ResponseEntity.created(URI.create("/api/users/" + createdUser.getId()))
+                .body(createdUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user);
-        if (updatedUser != null) {
-            return ResponseEntity.ok(updatedUser);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+        UserDTO updatedUser = userService.updateUser(id, userDTO);
+        return updatedUser != null
+                ? ResponseEntity.ok(updatedUser)
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         boolean deleted = userService.deleteUser(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return deleted
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }
+
