@@ -1,59 +1,59 @@
 package com.example.restaurant.controller;
 
+import com.example.restaurant.dto.ClientDTO;
 import com.example.restaurant.model.Client;
 import com.example.restaurant.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")
 public class ClientController {
 
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
+
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClients() {
-        List<Client> clients = clientService.getAllClients();
+    public ResponseEntity<List<ClientDTO>> getAllClients() {
+        List<ClientDTO> clients = clientService.getAllClients();
         return ResponseEntity.ok(clients);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> getClientById(@PathVariable Long id) {
-        Client client = clientService.getClientById(id);
-        if (client != null) {
-            return ResponseEntity.ok(client);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ClientDTO> getClientById(@PathVariable Long id) {
+        ClientDTO client = clientService.getClientById(id);
+        return client != null
+                ? ResponseEntity.ok(client)
+                : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        Client createdClient = clientService.createClient(client);
-        return ResponseEntity.ok(createdClient);
+    public ResponseEntity<ClientDTO> createClient(@Valid @RequestBody ClientDTO clientDTO) {
+        ClientDTO createdClient = clientService.createClient(clientDTO);
+        return ResponseEntity.created(URI.create("/api/clients/" + createdClient.getId()))
+                .body(createdClient);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client) {
-        Client updatedClient = clientService.updateClient(id, client);
-        if (updatedClient != null) {
-            return ResponseEntity.ok(updatedClient);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id, @Valid @RequestBody ClientDTO clientDTO) {
+        ClientDTO updatedClient = clientService.updateClient(id, clientDTO);
+        return updatedClient != null
+                ? ResponseEntity.ok(updatedClient)
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
         boolean deleted = clientService.deleteClient(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return deleted
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

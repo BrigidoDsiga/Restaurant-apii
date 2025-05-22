@@ -1,59 +1,58 @@
 package com.example.restaurant.controller;
 
-import com.example.restaurant.model.Dish;
+import com.example.restaurant.dto.DishDTO;
 import com.example.restaurant.service.DishService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/dishes")
 public class DishController {
 
-    @Autowired
-    private DishService dishService;
+    private final DishService dishService;
+
+    public DishController(DishService dishService) {
+        this.dishService = dishService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<Dish>> getAllDishes() {
-        List<Dish> dishes = dishService.getAllDishes();
+    public ResponseEntity<List<DishDTO>> getAllDishes() {
+        List<DishDTO> dishes = dishService.getAllDishes();
         return ResponseEntity.ok(dishes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Dish> getDishById(@PathVariable Long id) {
-        Dish dish = dishService.getDishById(id);
-        if (dish != null) {
-            return ResponseEntity.ok(dish);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<DishDTO> getDishById(@PathVariable Long id) {
+        DishDTO dish = dishService.getDishById(id);
+        return dish != null
+                ? ResponseEntity.ok(dish)
+                : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Dish> createDish(@RequestBody Dish dish) {
-        Dish createdDish = dishService.createDish(dish);
-        return ResponseEntity.ok(createdDish);
+    public ResponseEntity<DishDTO> createDish(@Valid @RequestBody DishDTO dishDTO) {
+        DishDTO createdDish = dishService.createDish(dishDTO);
+        return ResponseEntity.created(URI.create("/api/dishes/" + createdDish.getId()))
+                .body(createdDish);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Dish> updateDish(@PathVariable Long id, @RequestBody Dish dish) {
-        Dish updatedDish = dishService.updateDish(id, dish);
-        if (updatedDish != null) {
-            return ResponseEntity.ok(updatedDish);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<DishDTO> updateDish(@PathVariable Long id, @Valid @RequestBody DishDTO dishDTO) {
+        DishDTO updatedDish = dishService.updateDish(id, dishDTO);
+        return updatedDish != null
+                ? ResponseEntity.ok(updatedDish)
+                : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDish(@PathVariable Long id) {
         boolean deleted = dishService.deleteDish(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return deleted
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

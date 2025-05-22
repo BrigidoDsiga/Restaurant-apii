@@ -4,38 +4,45 @@ import com.example.restaurant.dto.OrderDTO;
 import com.example.restaurant.model.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
 
     public OrderDTO toDTO(Order order) {
-        if (order == null) {
+        if (Objects.isNull(order)) {
             return null;
         }
-        List<Long> dishIds = order.getDishes() != null
-                ? order.getDishes().stream().map(dish -> dish.getId()).collect(Collectors.toList())
-                : null;
+
         return new OrderDTO(
                 order.getId(),
                 order.getClient() != null ? order.getClient().getId() : null,
-                dishIds,
+                order.getDishes() != null
+                        ? order.getDishes().stream()
+                            .map(dish -> dish.getId())
+                            .collect(Collectors.toList())
+                        : null,
                 order.getTotal(),
                 order.getStatus()
         );
     }
 
-    public Order toEntity(OrderDTO orderDTO) {
-        if (orderDTO == null) {
+    /**
+     * Esse método cria uma entidade Order apenas com dados simples.
+     * A associação com Client e Dishes deve ser feita no Service, via repositórios.
+     */
+    public Order toEntity(OrderDTO dto) {
+        if (Objects.isNull(dto)) {
             return null;
         }
+
         Order order = new Order();
-        order.setId(orderDTO.getId());
-        // Atenção: Aqui você deve buscar o Client e os Dishes pelo ID usando os serviços/repositórios apropriados.
-        // Este método só faz o mapeamento básico dos IDs.
-        order.setTotal(orderDTO.getTotal());
-        order.setStatus(orderDTO.getStatus());
+        order.setId(dto.getId());
+        order.setTotal(dto.getTotal());
+        order.setStatus(dto.getStatus());
+
+        // A associação com client e dishes deve ser feita no serviço.
         return order;
     }
 }
