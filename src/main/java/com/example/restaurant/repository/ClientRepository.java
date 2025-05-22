@@ -1,4 +1,3 @@
-// ClientRepository
 package com.example.restaurant.repository;
 
 import com.example.restaurant.model.Client;
@@ -9,6 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
+    
     Optional<Client> findByEmail(String email);
+    
     boolean existsByEmail(String email);
 }
