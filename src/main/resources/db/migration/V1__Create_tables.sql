@@ -1,5 +1,3 @@
--- Criação das tabelas principais do sistema de restaurante
-
 -- Tabela de usuários
 <<<<<<< HEAD:src/main/resources/db/migration/V1__Create_tables.sql
 CREATE TABLE users (
