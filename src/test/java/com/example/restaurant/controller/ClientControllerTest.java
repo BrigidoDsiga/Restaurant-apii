@@ -94,8 +94,8 @@ public class ClientControllerTest {
             """;
 
         mockMvc.perform(post("/api/clients")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(clientJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(clientJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("João Silva")));
     }
@@ -114,8 +114,8 @@ public class ClientControllerTest {
             """;
 
         mockMvc.perform(put("/api/clients/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(clientJson))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(clientJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is("João Silva")));
     }

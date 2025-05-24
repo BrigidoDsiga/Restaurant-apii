@@ -12,7 +12,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     /**
      * Busca todos os pedidos relacionados a um cliente específico.
-     * 
+     *
      * @param clientId ID do cliente
      * @return lista de pedidos do cliente
      */

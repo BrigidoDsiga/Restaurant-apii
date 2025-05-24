@@ -4,32 +4,45 @@ import com.example.restaurant.dto.ClientDTO;
 import com.example.restaurant.model.Client;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
+import java.util.Optional;
 
+/**
+ * Responsável por mapear entre Client e ClientDTO.
+ */
 @Component
 public class ClientMapper {
 
+    /**
+     * Converte um Client para ClientDTO.
+     *
+     * @param client entidade Client
+     * @return DTO correspondente
+     */
     public ClientDTO toDTO(Client client) {
-        if (Objects.isNull(client)) {
-            return null;
-        }
-        return new ClientDTO(
-                client.getId(),
-                client.getName(),
-                client.getEmail(),
-                client.getPhone()
-        );
+        return Optional.ofNullable(client)
+                .map(c -> new ClientDTO(
+                        c.getId(),
+                        c.getName(),
+                        c.getEmail(),
+                        c.getPhone()))
+                .orElse(null);
     }
 
+    /**
+     * Converte um ClientDTO para Client.
+     *
+     * @param dto DTO do cliente
+     * @return entidade correspondente
+     */
     public Client toEntity(ClientDTO dto) {
-        if (Objects.isNull(dto)) {
-            return null;
-        }
+        if (dto == null) return null;
+
         Client client = new Client();
         client.setId(dto.getId());
         client.setName(dto.getName());
         client.setEmail(dto.getEmail());
         client.setPhone(dto.getPhone());
+
         return client;
     }
 }

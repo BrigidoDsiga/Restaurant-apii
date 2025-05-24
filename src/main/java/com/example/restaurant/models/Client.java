@@ -1,17 +1,15 @@
 package com.example.restaurant.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 
-@Data
-@NoArgsConstructor 
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "clients")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Client {
 
     @Id
@@ -30,3 +28,4 @@ public class Client {
     @Column(length = 255)
     private String address;
 }
+

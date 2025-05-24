@@ -29,5 +29,7 @@ public class Produto {
     private String categoria;
 
     @Column(nullable = false)
-    private boolean disponivel;
+    @Builder.Default
+    private boolean disponivel = true;  // Produto disponível por padrão
+
 }

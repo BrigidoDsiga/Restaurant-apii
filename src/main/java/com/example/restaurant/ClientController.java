@@ -22,6 +22,11 @@ public class ClientController {
 
     private final ClientService clientService;
 
+    /**
+     * Construtor para injeção de dependência do serviço de cliente.
+     *
+     * @param clientService serviço responsável pelas operações de cliente
+     */
     @Autowired
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
@@ -57,7 +62,7 @@ public class ClientController {
     /**
      * Cria um novo cliente.
      *
-     * @param clientDTO dados do cliente
+     * @param clientDTO dados do cliente a serem criados
      * @return cliente criado com URI no header Location
      */
     @Operation(summary = "Cria um novo cliente")
@@ -88,7 +93,7 @@ public class ClientController {
      * Remove um cliente pelo seu ID.
      *
      * @param id ID do cliente
-     * @return 204 se deletado, 404 se não encontrado
+     * @return resposta 204 se deletado, 404 se não encontrado
      */
     @Operation(summary = "Remove um cliente pelo ID")
     @DeleteMapping("/{id}")

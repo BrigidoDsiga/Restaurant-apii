@@ -1,5 +1,6 @@
 package com.example.restaurant.service;
 
+import com.example.restaurant.exception.ConflictException;
 import com.example.restaurant.exception.ResourceNotFoundException;
 import com.example.restaurant.model.User;
 import com.example.restaurant.repository.UserRepository;
@@ -32,10 +33,10 @@ public class UserService {
     @Transactional
     public User createUser(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new IllegalArgumentException("Já existe um usuário com este username.");
+            throw new ConflictException("Já existe um usuário com este username.");
         }
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Já existe um usuário com este e-mail.");
+            throw new ConflictException("Já existe um usuário com este e-mail.");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
@@ -46,16 +47,14 @@ public class UserService {
     public User updateUser(Long id, User userDetails) {
         User user = getUserById(id);
 
-        // Verifica duplicidade username se foi alterado
         if (!user.getUsername().equals(userDetails.getUsername())
-            && userRepository.existsByUsername(userDetails.getUsername())) {
-            throw new IllegalArgumentException("Já existe um usuário com este username.");
+                && userRepository.existsByUsername(userDetails.getUsername())) {
+            throw new ConflictException("Já existe um usuário com este username.");
         }
 
-        // Verifica duplicidade email se foi alterado
         if (!user.getEmail().equals(userDetails.getEmail())
-            && userRepository.existsByEmail(userDetails.getEmail())) {
-            throw new IllegalArgumentException("Já existe um usuário com este e-mail.");
+                && userRepository.existsByEmail(userDetails.getEmail())) {
+            throw new ConflictException("Já existe um usuário com este e-mail.");
         }
 
         user.setUsername(userDetails.getUsername());

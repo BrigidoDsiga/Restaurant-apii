@@ -1,251 +1,714 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Registrar - Restaurante Premium</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta - Restaurante Premium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    /* Reset simples */
+    :root {
+      --primary: #6C63FF;
+      --primary-light: #a29bfe;
+      --secondary: #00B894;
+      --danger: #FF7675;
+      --warning: #FDCB6E;
+      --dark: #2D3436;
+      --light: #F5F6FA;
+      --gray: #636E72;
+      --light-gray: #DFE6E9;
+      --white: #FFFFFF;
+    }
+    
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Roboto', sans-serif;
+      box-sizing: border-box;
     }
+    
     body {
-      background: #1a1a1a;
-      color: #eee;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 2rem;
+      background-image: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(0, 184, 148, 0.1));
     }
-    .form-container {
-      background: #2c2c2c;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    
+    .register-container {
+      display: flex;
+      max-width: 1000px;
       width: 100%;
-      max-width: 400px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
-    h2 {
-      margin-bottom: 25px;
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: #ffd700;
+    
+    .register-hero {
+      flex: 1;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      letter-spacing: 1px;
     }
-    form {
+    
+    .register-hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .register-hero p {
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      max-width: 350px;
+    }
+    
+    .hero-icon {
+      font-size: 8rem;
+      opacity: 0.2;
+      margin-bottom: 2rem;
+    }
+    
+    .register-form {
+      flex: 1;
+      background-color: var(--white);
+      padding: 3rem;
       display: flex;
       flex-direction: column;
     }
-    input {
-      background: #444;
-      border: 2px solid #444;
-      border-radius: 6px;
-      padding: 12px 15px;
-      margin-bottom: 18px;
-      font-size: 1rem;
-      color: #eee;
-      transition: border-color 0.3s ease;
+    
+    .form-header {
+      margin-bottom: 2rem;
     }
-    input:focus {
-      border-color: #ffd700;
+    
+    .form-header h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-header p {
+      color: var(--gray);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--light-gray);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
       outline: none;
-      background: #3a3a3a;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
     }
-    input.invalid {
-      border-color: #e74c3c;
-      background: #5a2a2a;
+    
+    .form-control.invalid {
+      border-color: var(--danger);
     }
-    button {
-      background: #ffd700;
-      border: none;
-      color: #222;
-      font-weight: 700;
-      font-size: 1.1rem;
-      padding: 14px;
-      border-radius: 6px;
+    
+    .form-control.valid {
+      border-color: var(--secondary);
+    }
+    
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 2.5rem;
+      color: var(--gray);
+    }
+    
+    .error-message {
+      color: var(--danger);
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      display: none;
+    }
+    
+    .show-password {
+      position: absolute;
+      right: 1rem;
+      top: 2.5rem;
       cursor: pointer;
-      transition: background 0.3s ease;
-      box-shadow: 0 4px 10px rgba(255,215,0,0.6);
+      color: var(--gray);
     }
-    button:hover {
-      background: #e6c200;
-    }
-    .error {
-      color: #e74c3c;
-      font-size: 0.9rem;
-      min-height: 20px;
-      margin-top: -10px;
-      margin-bottom: 12px;
-      text-align: center;
-    }
-    .success {
-      color: #2ecc71;
+    
+    .register-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
       font-size: 1rem;
-      margin-bottom: 10px;
-      text-align: center;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 1rem;
+      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
     }
-    @media (max-width: 420px) {
-      .form-container {
-        padding: 20px;
+    
+    .register-btn:hover {
+      background-color: var(--primary-light);
+    }
+    
+    .register-btn:disabled {
+      background-color: var(--light-gray);
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    
+    .form-footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      color: var(--gray);
+    }
+    
+    .form-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .form-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .strength-meter {
+      height: 5px;
+      background-color: var(--light-gray);
+      border-radius: 5px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .strength-meter-fill {
+      height: 100%;
+      width: 0;
+      transition: width 0.3s, background-color 0.3s;
+    }
+    
+    .strength-weak {
+      background-color: var(--danger);
+      width: 33%;
+    }
+    
+    .strength-medium {
+      background-color: var(--warning);
+      width: 66%;
+    }
+    
+    .strength-strong {
+      background-color: var(--secondary);
+      width: 100%;
+    }
+    
+    .strength-text {
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      color: var(--gray);
+    }
+    
+    /* Modal de sucesso */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal {
+      background-color: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+      transform: translateY(-20px);
+      transition: all 0.3s;
+    }
+    
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+    
+    .modal-icon {
+      font-size: 3rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+    
+    .modal h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+    
+    .modal p {
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+    }
+    
+    .modal-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .modal-btn:hover {
+      background-color: var(--primary-light);
+    }
+    
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .register-container {
+        flex-direction: column;
+      }
+      
+      .register-hero {
+        padding: 2rem;
+        order: -1;
+      }
+      
+      .hero-icon {
+        font-size: 5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .register-hero, .register-form {
+        padding: 1.5rem;
+      }
+      
+      .register-hero h1 {
+        font-size: 1.8rem;
+      }
+      
+      .form-header h2 {
+        font-size: 1.5rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="form-container" role="main" aria-label="Formulário de cadastro">
-    <h2>Registrar</h2>
-    <form id="registerForm" novalidate>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        placeholder="Usuário"
-        autocomplete="username"
-        required
-        aria-describedby="usernameError"
-        aria-invalid="false"
-      />
-      <p id="usernameError" class="error" aria-live="polite"></p>
-
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="Email"
-        autocomplete="email"
-        required
-        aria-describedby="emailError"
-        aria-invalid="false"
-      />
-      <p id="emailError" class="error" aria-live="polite"></p>
-
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Senha"
-        autocomplete="new-password"
-        required
-        minlength="6"
-        aria-describedby="passwordError"
-        aria-invalid="false"
-      />
-      <p id="passwordError" class="error" aria-live="polite"></p>
-
-      <button type="submit" aria-label="Registrar usuário">Registrar</button>
-    </form>
-    <p id="registerMessage" class="success" aria-live="polite"></p>
+  <div class="register-container">
+    <div class="register-hero">
+      <div class="hero-icon">
+        <i class="fas fa-utensils"></i>
+      </div>
+      <h1>Junte-se a nós</h1>
+      <p>Cadastre-se para fazer pedidos, acompanhar seu histórico e receber ofertas exclusivas!</p>
+      <div>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <p>4.9/5 - Avaliação dos clientes</p>
+      </div>
+    </div>
+    
+    <div class="register-form">
+      <div class="form-header">
+        <h2>Criar Conta</h2>
+        <p>Preencha os campos abaixo para se registrar</p>
+      </div>
+      
+      <form id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="name">Nome Completo</label>
+          <input 
+            type="text" 
+            id="name" 
+            class="form-control" 
+            placeholder="Digite seu nome completo"
+            required
+          >
+          <i class="fas fa-user input-icon"></i>
+          <span class="error-message" id="nameError">Por favor, insira seu nome completo</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            class="form-control" 
+            placeholder="Digite seu email"
+            required
+          >
+          <i class="fas fa-envelope input-icon"></i>
+          <span class="error-message" id="emailError">Por favor, insira um email válido</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Telefone</label>
+          <input 
+            type="tel" 
+            id="phone" 
+            class="form-control" 
+            placeholder="(00) 00000-0000"
+            required
+          >
+          <i class="fas fa-phone input-icon"></i>
+          <span class="error-message" id="phoneError">Por favor, insira um telefone válido</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input 
+            type="password" 
+            id="password" 
+            class="form-control" 
+            placeholder="Crie uma senha forte"
+            minlength="8"
+            required
+          >
+          <i class="fas fa-eye show-password" id="togglePassword"></i>
+          <div class="strength-meter">
+            <div class="strength-meter-fill" id="strengthMeter"></div>
+          </div>
+          <div class="strength-text" id="strengthText">Força da senha</div>
+          <span class="error-message" id="passwordError">A senha deve ter pelo menos 8 caracteres</span>
+        </div>
+        
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Senha</label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            class="form-control" 
+            placeholder="Digite a senha novamente"
+            required
+          >
+          <i class="fas fa-lock input-icon"></i>
+          <span class="error-message" id="confirmPasswordError">As senhas não coincidem</span>
+        </div>
+        
+        <div class="form-group">
+          <input type="checkbox" id="terms" required>
+          <label for="terms" style="display: inline; margin-left: 0.5rem;">
+            Eu concordo com os <a href="#" style="color: var(--primary);">Termos de Serviço</a> e <a href="#" style="color: var(--primary);">Política de Privacidade</a>
+          </label>
+          <span class="error-message" id="termsError">Você deve aceitar os termos</span>
+        </div>
+        
+        <button type="submit" class="register-btn" id="registerBtn" disabled>
+          Criar Conta
+        </button>
+      </form>
+      
+      <div class="form-footer">
+        Já tem uma conta? <a href="login.html">Faça login</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal de sucesso -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal">
+      <div class="modal-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Cadastro realizado!</h3>
+      <p>Sua conta foi criada com sucesso. Agora você pode acessar todos os recursos do nosso restaurante.</p>
+      <button class="modal-btn" id="modalBtn">Ir para Login</button>
+    </div>
   </div>
 
   <script>
-    (() => {
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elementos do formulário
       const form = document.getElementById('registerForm');
-      const usernameInput = document.getElementById('username');
+      const nameInput = document.getElementById('name');
       const emailInput = document.getElementById('email');
+      const phoneInput = document.getElementById('phone');
       const passwordInput = document.getElementById('password');
-
-      const usernameError = document.getElementById('usernameError');
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const termsCheckbox = document.getElementById('terms');
+      const registerBtn = document.getElementById('registerBtn');
+      
+      // Elementos de erro
+      const nameError = document.getElementById('nameError');
       const emailError = document.getElementById('emailError');
+      const phoneError = document.getElementById('phoneError');
       const passwordError = document.getElementById('passwordError');
-      const registerMessage = document.getElementById('registerMessage');
-
-      // Funções de validação
-      function validateUsername() {
-        const val = usernameInput.value.trim();
-        if (val.length < 3) {
-          usernameError.textContent = 'O usuário deve ter ao menos 3 caracteres.';
-          usernameInput.classList.add('invalid');
-          usernameInput.setAttribute('aria-invalid', 'true');
-          return false;
-        }
-        usernameError.textContent = '';
-        usernameInput.classList.remove('invalid');
-        usernameInput.setAttribute('aria-invalid', 'false');
-        return true;
-      }
-
-      function validateEmail() {
-        const val = emailInput.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(val)) {
-          emailError.textContent = 'Por favor, insira um e-mail válido.';
-          emailInput.classList.add('invalid');
-          emailInput.setAttribute('aria-invalid', 'true');
-          return false;
-        }
-        emailError.textContent = '';
-        emailInput.classList.remove('invalid');
-        emailInput.setAttribute('aria-invalid', 'false');
-        return true;
-      }
-
-      function validatePassword() {
-        const val = passwordInput.value;
-        if (val.length < 6) {
-          passwordError.textContent = 'A senha deve ter ao menos 6 caracteres.';
-          passwordInput.classList.add('invalid');
-          passwordInput.setAttribute('aria-invalid', 'true');
-          return false;
-        }
-        passwordError.textContent = '';
-        passwordInput.classList.remove('invalid');
-        passwordInput.setAttribute('aria-invalid', 'false');
-        return true;
-      }
-
-      // Validação ao digitar
-      usernameInput.addEventListener('input', validateUsername);
-      emailInput.addEventListener('input', validateEmail);
-      passwordInput.addEventListener('input', validatePassword);
-
-      // Simula cadastro no localStorage
-      function saveUser(user) {
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        // Verifica se email ou usuário já existe
-        const exists = users.some(
-          u => u.email.toLowerCase() === user.email.toLowerCase() || u.username.toLowerCase() === user.username.toLowerCase()
-        );
-        if (exists) return false;
-        users.push(user);
-        localStorage.setItem('users', JSON.stringify(users));
-        return true;
-      }
-
-      form.addEventListener('submit', e => {
-        e.preventDefault();
-        registerMessage.textContent = '';
-        if (validateUsername() && validateEmail() && validatePassword()) {
-          const user = {
-            username: usernameInput.value.trim(),
-            email: emailInput.value.trim(),
-            password: passwordInput.value // Atenção: não armazenar senha em texto puro em produção!
-          };
-          const success = saveUser(user);
-          if (!success) {
-            registerMessage.textContent = '';
-            emailError.textContent = 'Usuário ou email já cadastrado.';
-            emailInput.classList.add('invalid');
-            emailInput.setAttribute('aria-invalid', 'true');
-          } else {
-            registerMessage.textContent = 'Cadastro realizado com sucesso! Você já pode fazer login.';
-            form.reset();
-            usernameInput.setAttribute('aria-invalid', 'false');
-            emailInput.setAttribute('aria-invalid', 'false');
-            passwordInput.setAttribute('aria-invalid', 'false');
-            usernameError.textContent = '';
-            emailError.textContent = '';
-            passwordError.textContent = '';
-          }
+      const confirmPasswordError = document.getElementById('confirmPasswordError');
+      const termsError = document.getElementById('termsError');
+      
+      // Elementos de força da senha
+      const strengthMeter = document.getElementById('strengthMeter');
+      const strengthText = document.getElementById('strengthText');
+      
+      // Modal
+      const successModal = document.getElementById('successModal');
+      const modalBtn = document.getElementById('modalBtn');
+      
+      // Mostrar/ocultar senha
+      const togglePassword = document.getElementById('togglePassword');
+      let passwordVisible = false;
+      
+      // Validar formulário enquanto o usuário digita
+      form.addEventListener('input', validateForm);
+      termsCheckbox.addEventListener('change', validateForm);
+      
+      // Validar campo nome
+      nameInput.addEventListener('blur', function() {
+        if (nameInput.value.trim() === '') {
+          showError(nameInput, nameError, 'Por favor, insira seu nome completo');
+        } else if (nameInput.value.trim().split(' ').length < 2) {
+          showError(nameInput, nameError, 'Por favor, insira seu nome completo');
         } else {
-          registerMessage.textContent = '';
+          showSuccess(nameInput);
+          hideError(nameError);
         }
       });
-    })();
+      
+      // Validar campo email
+      emailInput.addEventListener('blur', function() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailInput.value.trim() === '') {
+          showError(emailInput, emailError, 'Por favor, insira seu email');
+        } else if (!emailRegex.test(emailInput.value.trim())) {
+          showError(emailInput, emailError, 'Por favor, insira um email válido');
+        } else {
+          showSuccess(emailInput);
+          hideError(emailError);
+        }
+      });
+      
+      // Validar campo telefone
+      phoneInput.addEventListener('input', function(e) {
+        // Formatação do telefone
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.substring(0, 11);
+        
+        if (value.length <= 10) {
+          value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+        } else {
+          value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+        }
+        
+        e.target.value = value;
+        
+        // Validação
+        if (value.length < 14) {
+          showError(phoneInput, phoneError, 'Por favor, insira um telefone válido');
+        } else {
+          showSuccess(phoneInput);
+          hideError(phoneError);
+        }
+      });
+      
+      // Validar campo senha
+      passwordInput.addEventListener('input', function() {
+        validatePassword();
+        checkPasswordMatch();
+      });
+      
+      // Validar campo confirmar senha
+      confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+      
+      // Mostrar/ocultar senha
+      togglePassword.addEventListener('click', function() {
+        passwordVisible = !passwordVisible;
+        passwordInput.type = passwordVisible ? 'text' : 'password';
+        confirmPasswordInput.type = passwordVisible ? 'text' : 'password';
+        togglePassword.classList.toggle('fa-eye-slash');
+      });
+      
+      // Enviar formulário
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validar todos os campos antes de enviar
+        if (validateForm()) {
+          // Simular envio para o servidor
+          setTimeout(() => {
+            successModal.classList.add('active');
+          }, 1000);
+        }
+      });
+      
+      // Botão do modal
+      modalBtn.addEventListener('click', function() {
+        window.location.href = 'login.html';
+      });
+      
+      // Função para validar o formulário completo
+      function validateForm() {
+        let isValid = true;
+        
+        // Validar nome
+        if (nameInput.value.trim() === '' || nameInput.value.trim().split(' ').length < 2) {
+          showError(nameInput, nameError, 'Por favor, insira seu nome completo');
+          isValid = false;
+        }
+        
+        // Validar email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (emailInput.value.trim() === '' || !emailRegex.test(emailInput.value.trim())) {
+          showError(emailInput, emailError, 'Por favor, insira um email válido');
+          isValid = false;
+        }
+        
+        // Validar telefone
+        if (phoneInput.value.length < 14) {
+          showError(phoneInput, phoneError, 'Por favor, insira um telefone válido');
+          isValid = false;
+        }
+        
+        // Validar senha
+        if (!validatePassword()) {
+          isValid = false;
+        }
+        
+        // Validar confirmação de senha
+        if (!checkPasswordMatch()) {
+          isValid = false;
+        }
+        
+        // Validar termos
+        if (!termsCheckbox.checked) {
+          termsError.style.display = 'block';
+          isValid = false;
+        } else {
+          termsError.style.display = 'none';
+        }
+        
+        // Habilitar/desabilitar botão de registro
+        registerBtn.disabled = !isValid;
+        
+        return isValid;
+      }
+      
+      // Função para validar senha
+      function validatePassword() {
+        const password = passwordInput.value;
+        
+        // Verificar comprimento mínimo
+        if (password.length < 8) {
+          showError(passwordInput, passwordError, 'A senha deve ter pelo menos 8 caracteres');
+          return false;
+        }
+        
+        // Verificar força da senha
+        let strength = 0;
+        
+        // Contém letras minúsculas
+        if (/[a-z]/.test(password)) strength++;
+        
+        // Contém letras maiúsculas
+        if (/[A-Z]/.test(password)) strength++;
+        
+        // Contém números
+        if (/[0-9]/.test(password)) strength++;
+        
+        // Contém caracteres especiais
+        if (/[^a-zA-Z0-9]/.test(password)) strength++;
+        
+        // Atualizar medidor de força
+        strengthMeter.className = 'strength-meter-fill';
+        if (password.length === 0) {
+          strengthText.textContent = 'Força da senha';
+        } else if (strength <= 2) {
+          strengthMeter.classList.add('strength-weak');
+          strengthText.textContent = 'Fraca';
+          strengthText.style.color = 'var(--danger)';
+        } else if (strength === 3) {
+          strengthMeter.classList.add('strength-medium');
+          strengthText.textContent = 'Média';
+          strengthText.style.color = 'var(--warning)';
+        } else {
+          strengthMeter.classList.add('strength-strong');
+          strengthText.textContent = 'Forte';
+          strengthText.style.color = 'var(--secondary)';
+        }
+        
+        showSuccess(passwordInput);
+        hideError(passwordError);
+        return true;
+      }
+      
+      // Função para verificar se as senhas coincidem
+      function checkPasswordMatch() {
+        if (passwordInput.value !== confirmPasswordInput.value) {
+          showError(confirmPasswordInput, confirmPasswordError, 'As senhas não coincidem');
+          return false;
+        } else if (confirmPasswordInput.value === '') {
+          showError(confirmPasswordInput, confirmPasswordError, 'Por favor, confirme sua senha');
+          return false;
+        } else {
+          showSuccess(confirmPasswordInput);
+          hideError(confirmPasswordError);
+          return true;
+        }
+      }
+      
+      // Funções auxiliares
+      function showError(input, errorElement, message) {
+        input.classList.add('invalid');
+        input.classList.remove('valid');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      }
+      
+      function showSuccess(input) {
+        input.classList.remove('invalid');
+        input.classList.add('valid');
+      }
+      
+      function hideError(errorElement) {
+        errorElement.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>

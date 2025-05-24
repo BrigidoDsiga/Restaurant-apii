@@ -5,40 +5,35 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
+package com.example.restaurant.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "dishes")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-@Table(name = "itens_pedido")
-public class ItemPedido {
+public class Dish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relação muitos-para-um com Produto, carregamento EAGER para garantir dados disponíveis
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "produto_id", nullable = false)
-    private Produto produto;
+    @Column(nullable = false, length = 100)
+    private String name;
 
-    @Column(nullable = false)
-    private Integer quantidade;
+    @Column(length = 255)
+    private String description;
 
-    @Column(nullable = false, precision = 15, scale = 2)
-    private BigDecimal precoUnitario;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 
-    @Column(nullable = false, precision = 15, scale = 2)
-    private BigDecimal subtotal;
-
-    // Método auxiliar para calcular subtotal baseado na quantidade e preço unitário
-    public void calcularSubtotal() {
-        if (quantidade != null && precoUnitario != null) {
-            this.subtotal = precoUnitario.multiply(new BigDecimal(quantidade));
-        } else {
-            this.subtotal = BigDecimal.ZERO;
-        }
-    }
-
+    @Column(length = 100)
+    private String category;
 }

@@ -7,9 +7,18 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper para conversão entre Order e OrderDTO.
+ */
 @Component
 public class OrderMapper {
 
+    /**
+     * Converte uma entidade Order em OrderDTO.
+     *
+     * @param order entidade Order
+     * @return DTO correspondente ou null se order for null
+     */
     public OrderDTO toDTO(Order order) {
         if (Objects.isNull(order)) {
             return null;
@@ -20,21 +29,22 @@ public class OrderMapper {
                 order.getClient() != null ? order.getClient().getId() : null,
                 order.getDishes() != null
                         ? order.getDishes().stream()
-                            .map(dish -> dish.getId())
-                            .collect(Collectors.toList())
+                        .map(Dish::getId)
+                        .collect(Collectors.toList())
                         : null,
                 order.getTotal(),
                 order.getStatus()
         );
     }
-<<<<<<< HEAD
 
     /**
-     * Esse método cria uma entidade Order apenas com dados simples.
-     * A associação com Client e Dishes deve ser feita no Service, via repositórios.
+     * Converte um OrderDTO em entidade Order.
+     * Note que as associações com Client e Dishes devem ser feitas no serviço,
+     * via repositórios, para manter o mapper simples.
+     *
+     * @param dto DTO de pedido
+     * @return entidade Order correspondente ou null se dto for null
      */
-=======
->>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c
     public Order toEntity(OrderDTO dto) {
         if (Objects.isNull(dto)) {
             return null;
@@ -44,11 +54,9 @@ public class OrderMapper {
         order.setId(dto.getId());
         order.setTotal(dto.getTotal());
         order.setStatus(dto.getStatus());
-<<<<<<< HEAD
 
-        // A associação com client e dishes deve ser feita no serviço.
-=======
->>>>>>> a6fcf881dd26237b5959d0182a92ca328a33e49c
+
+
         return order;
     }
 }

@@ -1,4 +1,4 @@
-# 🍽️ Restaurant API
+**# 🍽️ Restaurant API
 
 Projeto completo de uma API RESTful para gerenciamento de um restaurante. Desenvolvido com **Java 17**, **Spring Boot**, **PostgreSQL**, **JWT**, e integração com **Docker**. O sistema oferece funcionalidades de autenticação, cadastro de clientes, gerenciamento de pratos e pedidos.
 
@@ -120,5 +120,5 @@ Acesse a documentação interativa da API via Swagger em:
 http://localhost:8080/swagger-ui.html
 
 👨‍💻 Autor
-Brígido - Desenvolvedor Java Back-end
+Brígido - Desenvolvedor Java Back-end**
 

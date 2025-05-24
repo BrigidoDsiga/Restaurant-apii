@@ -35,9 +35,16 @@ public class ItemPedido {
     // Método auxiliar para calcular subtotal baseado na quantidade e preço unitário
     public void calcularSubtotal() {
         if (quantidade != null && precoUnitario != null) {
-            this.subtotal = precoUnitario.multiply(new BigDecimal(quantidade));
+            this.subtotal = precoUnitario.multiply(BigDecimal.valueOf(quantidade));
         } else {
             this.subtotal = BigDecimal.ZERO;
         }
+    }
+
+    // Callback JPA para garantir subtotal calculado antes de persistir/atualizar
+    @PrePersist
+    @PreUpdate
+    public void preSave() {
+        calcularSubtotal();
     }
 }

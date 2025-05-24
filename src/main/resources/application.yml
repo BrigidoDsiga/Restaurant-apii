@@ -7,32 +7,31 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate      # Valida o schema; use 'update' ou 'none' conforme necessidade
-    show-sql: true            # Exibe as queries SQL no console
+      ddl-auto: validate      # Valida o schema em produção; para dev pode usar 'update' para aplicar alterações automáticas
+    show-sql: true            # Mostrar SQL no console para debug
     properties:
       hibernate:
-        format_sql: true      # Formata as queries SQL para melhor leitura
+        format_sql: true      # Formatar SQL para melhor leitura
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   flyway:
-    enabled: true             # Ativa migrações automáticas via Flyway
-    locations: classpath:db/migration  # Pasta com scripts de migração
+    enabled: true
+    locations: classpath:db/migration
 
 server:
-  port: 8080                  # Porta padrão do servidor Spring Boot
+  port: 8080
 
 jwt:
-  secret: ${JWT_SECRET:mysecretkey1234567890}   # Segredo JWT (prefira variável ambiente)
-  expiration: 86400000        # Tempo de expiração do token em milissegundos (1 dia)
+  secret: ${JWT_SECRET:mysecretkey1234567890}   # Use variável ambiente JWT_SECRET para produção
+  expiration: 86400000        # 1 dia em milissegundos
 
 logging:
   level:
     org.springframework: INFO
-    com.example.restaurant: DEBUG   # Log detalhado para seu pacote
+    com.example.restaurant: DEBUG   # Log mais detalhado só para seu pacote
 
 springdoc:
   api-docs:
-    path: /api-docs            # URL para JSON da API
+    path: /api-docs
   swagger-ui:
-    path: /swagger-ui.html     # URL da interface Swagger UI
- 
+    path: /swagger-ui.html
