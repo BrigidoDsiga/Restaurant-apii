@@ -120,5 +120,5 @@ Acesse a documentação interativa da API via Swagger em:
 http://localhost:8080/swagger-ui.html
 
 👨‍💻 Autor
-Brígido - Desenvolvedor Java Back-end**
+Brígido - Desenvolvedor Java Back-end
 
